@@ -1,0 +1,55 @@
+name: mis_app
+description: Makromedia Integrated System (MIS) - responsive Flutter app (mobile, tablet, web).
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management & routing
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.6.0
+
+  # Networking & storage
+  dio: ^5.7.0
+  flutter_secure_storage: ^9.2.2   # simpan token login (mobile/desktop)
+
+  # UI
+  google_fonts: ^6.2.1             # fallback font (Inter) selama font asli belum di-bundle
+  iconsax_flutter: ^1.0.0          # set ikon "vuesax" yang dipakai di Figma
+  flutter_svg: ^2.0.10
+  fl_chart: ^0.69.0                # grafik di Dashboard
+  table_calendar: ^3.1.2           # "Calendar Project" di Dashboard
+
+  # Utils
+  intl: ">=0.19.0 <1.0.0"          # format Rupiah & tanggal
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  # Font desain asli = "Overused Grotesk" (bukan Google Font).
+  # Unduh, taruh di assets/fonts/, lalu hapus tanda komentar blok di bawah
+  # dan set AppTypography.useBundledFont = true.
+  # fonts:
+  #   - family: OverusedGrotesk
+  #     fonts:
+  #       - asset: assets/fonts/OverusedGrotesk-Regular.ttf
+  #       - asset: assets/fonts/OverusedGrotesk-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/OverusedGrotesk-SemiBold.ttf
+  #         weight: 600

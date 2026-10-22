@@ -1,0 +1,52 @@
+Running `(cd /Users/muhammadrasyidridho/.pub-cache/hosted/pub.dev/objective_c-9.5.0/; ANDROID_HOME=/Users/muhammadrasyidridho/Library/Android/sdk TMPDIR=/var/folders/97/tcy20p69061bh7t1mgw4q3qr0000gn/T/ ANDROID_NDK_ROOT=/Users/muhammadrasyidridho/Library/Android/sdk/ndk/28.2.13676358 PATH=/Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle/Contents/Frameworks/SWBUniversalPlatform.framework/Resources:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/Users/muhammadrasyidridho/flutter/bin/:/Users/muhammadrasyidridho/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/muhammadrasyidridho/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Library/Frameworks/Python.framework/Versions/3.14/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Users/muhammadrasyidridho/flutter/bin:/Users/muhammadrasyidridho/.cargo/bin:/Users/muhammadrasyidridho/Library/Android/sdk/platform-tools:/Users/muhammadrasyidridho/Library/Android/sdk/emulator:/Users/muhammadrasyidridho/Library/Android/sdk/cmdline-tools/latest/bin HOME=/Users/muhammadrasyidridho ANDROID_NDK_HOME=/Users/muhammadrasyidridho/Library/Android/sdk/ndk/28.2.13676358 /Users/muhammadrasyidridho/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/package_config.json /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/objective_c/6e20107924/hook.dill --config=/Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/objective_c/6e20107924/input.json )`.
+INFO: 2026-10-22 14:05:20.884341: Using compiler /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang from BuildInput.cCompiler.cc.
+
+INFO: 2026-10-22 14:05:20.887833: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -target arm64-apple-ios-simulator -mios-version-min=15 -c /Users/muhammadrasyidridho/.pub-cache/hosted/pub.dev/objective_c-9.5.0/src/include/dart_api_dl.c -fpic -gline-tables-only -I src -o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-10-22 14:05:20.888887: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -target arm64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/muhammadrasyidridho/.pub-cache/hosted/pub.dev/objective_c-9.5.0/src/input_stream_adapter.m -fpic -gline-tables-only -I src -o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/input_stream_adapter.m.o
+
+INFO: 2026-10-22 14:05:20.889007: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -target arm64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/muhammadrasyidridho/.pub-cache/hosted/pub.dev/objective_c-9.5.0/src/objective_c.m -fpic -gline-tables-only -I src -o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c.m.o
+
+INFO: 2026-10-22 14:05:20.889204: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -target arm64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/muhammadrasyidridho/.pub-cache/hosted/pub.dev/objective_c-9.5.0/src/ns_number.m -fpic -gline-tables-only -I src -o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/ns_number.m.o
+
+INFO: 2026-10-22 14:05:20.889437: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -target arm64-apple-ios-simulator -mios-version-min=15 -x objective-c -fobjc-arc -c /Users/muhammadrasyidridho/.pub-cache/hosted/pub.dev/objective_c-9.5.0/src/objective_c_bindings_generated.m -fpic -gline-tables-only -I src -o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-10-22 14:05:20.946918: 
+INFO: 2026-10-22 14:05:20.947026: 
+INFO: 2026-10-22 14:05:20.947049: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c.c.o
+
+INFO: 2026-10-22 14:05:20.947529: 
+INFO: 2026-10-22 14:05:20.947573: 
+INFO: 2026-10-22 14:05:20.947595: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-10-22 14:05:20.965749: 
+INFO: 2026-10-22 14:05:20.965813: 
+INFO: 2026-10-22 14:05:20.965837: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/observer.m.o
+
+INFO: 2026-10-22 14:05:20.973566: 
+INFO: 2026-10-22 14:05:20.973644: 
+INFO: 2026-10-22 14:05:20.973676: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/protocol.m.o
+
+INFO: 2026-10-22 14:05:21.042949: 
+INFO: 2026-10-22 14:05:21.042985: 
+INFO: 2026-10-22 14:05:21.042994: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/ns_number.m.o
+
+INFO: 2026-10-22 14:05:21.064845: 
+INFO: 2026-10-22 14:05:21.064908: 
+INFO: 2026-10-22 14:05:21.064927: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/input_stream_adapter.m.o
+
+INFO: 2026-10-22 14:05:21.069755: 
+INFO: 2026-10-22 14:05:21.069793: 
+INFO: 2026-10-22 14:05:21.069804: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c.m.o
+
+INFO: 2026-10-22 14:05:21.105594: 
+INFO: 2026-10-22 14:05:21.105628: 
+INFO: 2026-10-22 14:05:21.105636: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-10-22 14:05:21.105890: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk -target arm64-apple-ios-simulator -mios-version-min=15 /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/include/dart_api_dl.c.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c.c.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/input_stream_adapter.m.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c.m.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/observer.m.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/ns_number.m.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/protocol.m.o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/obj/src/objective_c_bindings_generated.m.o -o /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/objective_c.dylib
+
+INFO: 2026-10-22 14:05:21.135301: 
+INFO: 2026-10-22 14:05:21.135357: ld: warning: -undefined dynamic_lookup is deprecated on iOS-simulator
+
+INFO: 2026-10-22 14:05:21.135364: Generated /Users/muhammadrasyidridho/Dev/mis_app/.dart_tool/hooks_runner/shared/objective_c/build/6e20107924/objective_c.dylib
+
