@@ -2,11 +2,11 @@
 set -e
 
 echo "=== Membersihkan Label Anggota (Jika Ada) ==="
-gh label delete "anggota-1" --yes || true
-gh label delete "anggota-2" --yes || true
-gh label delete "anggota-3" --yes || true
+gh label delete "anggota-1" --yes 2>/dev/null || true
+gh label delete "anggota-2" --yes 2>/dev/null || true
+gh label delete "anggota-3" --yes 2>/dev/null || true
 
-echo "=== Memulai Pembuatan Label Modul & Status ==="
+echo "=== Memastikan Label Modul & Status Tersedia ==="
 gh label create "status:ready" --color "FBCA04" --description "Siap dikerjakan (Sprint 1)" --force || true
 gh label create "status:backlog" --color "C5DEF5" --description "Backlog (Sprint 2 & 3)" --force || true
 gh label create "module:auth" --color "D93F0B" --description "Modul Autentikasi" --force || true
@@ -16,13 +16,49 @@ gh label create "module:approvals" --color "E99695" --description "Modul Approva
 gh label create "module:manpower" --color "BFD4F2" --description "Modul Manpower" --force || true
 gh label create "module:clients" --color "D4C5F9" --description "Modul Clients" --force || true
 
-echo "=== Label Berhasil Disiapkan ==="
-echo "=== Membuat Issues Modul Auth, Core & Dashboard ==="
+echo "=== Memeriksa dan Membersihkan Issue Duplikat ==="
+temp_file=$(mktemp)
+seen_file=$(mktemp)
 
-gh issue create \
-  --title "[AUTH] Integrasi API Login & Token Storage" \
-  --label "status:ready,module:auth" \
-  --body "### Deskripsi
+# Ambil daftar seluruh open issue, urutkan berdasarkan nomor issue terkecil
+gh issue list --limit 200 --state open --json number,title --jq '.[] | "\(.number)\t\(.title)"' | sort -n > "$temp_file"
+
+while IFS=$'\t' read -r num title; do
+  if [ -z "$num" ] || [ -z "$title" ]; then
+    continue
+  fi
+
+  if grep -Fxq "$title" "$seen_file"; then
+    echo "Mendeteksi duplikat! Menghapus/menutup Issue #$num: '$title'"
+    gh issue delete "$num" --yes 2>/dev/null || gh issue close "$num" --reason "not_planned" || true
+  else
+    echo "$title" >> "$seen_file"
+  fi
+done < "$temp_file"
+
+rm -f "$temp_file" "$seen_file"
+
+# Fungsi pembantu untuk membuat issue jika belum ada
+create_issue_if_not_exists() {
+  local title="$1"
+  local labels="$2"
+  local body="$3"
+
+  # Cek apakah issue dengan judul ini sudah ada di open issues
+  local count
+  count=$(gh issue list --limit 100 --state open --search "\"$title\" in:title" --json title --jq "[.[] | select(.title == \"$title\")] | length")
+
+  if [ "$count" -gt 0 ]; then
+    echo "Issue sudah ada: '$title' (dilewati)"
+  else
+    echo "Membuat issue baru: '$title'"
+    gh issue create --title "$title" --label "$labels" --body "$body"
+  fi
+}
+
+echo "=== Sinkronisasi 17 Issue Unik ==="
+
+create_issue_if_not_exists "[AUTH] Integrasi API Login & Token Storage" "status:ready,module:auth" "### Deskripsi
 Hubungkan halaman login dengan API backend dan simpan JWT token ke local secure storage.
 
 ### Checklist
@@ -32,10 +68,7 @@ Hubungkan halaman login dengan API backend dan simpan JWT token ke local secure 
 - [ ] Error feedback jika login gagal (snack/banner)
 - [ ] State auth disimpan di Riverpod"
 
-gh issue create \
-  --title "[CORE] Setup Dio Auth Interceptor & Router Guard" \
-  --label "status:ready,module:auth" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[CORE] Setup Dio Auth Interceptor & Router Guard" "status:ready,module:auth" "### Deskripsi
 Konfigurasi Dio Interceptor untuk inject header Authorization dan redirect guard di go_router.
 
 ### Checklist
@@ -43,10 +76,7 @@ Konfigurasi Dio Interceptor untuk inject header Authorization dan redirect guard
 - [ ] Error interceptor: jika response 401 Unauthorized, hapus token dan redirect ke /login
 - [ ] GoRouter redirect guard: cegah akses halaman dalam jika belum login"
 
-gh issue create \
-  --title "[DASHBOARD] Integrasi Widget KPI Cards dengan Real API" \
-  --label "status:backlog,module:dashboard" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[DASHBOARD] Integrasi Widget KPI Cards dengan Real API" "status:backlog,module:dashboard" "### Deskripsi
 Ganti nilai statis pada card Dashboard dengan response real dari endpoint summary/statistik BE.
 
 ### Checklist
@@ -55,10 +85,7 @@ Ganti nilai statis pada card Dashboard dengan response real dari endpoint summar
 - [ ] Tampilkan Total Contract, Paid, Rest of Bill, dan Project Cost
 - [ ] Handle loading shimmer & error state"
 
-gh issue create \
-  --title "[DASHBOARD] Implementasi Project Calendar menggunakan table_calendar" \
-  --label "status:backlog,module:dashboard" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[DASHBOARD] Implementasi Project Calendar menggunakan table_calendar" "status:backlog,module:dashboard" "### Deskripsi
 Tampilkan kalender project dan event di halaman Dashboard menggunakan package table_calendar.
 
 ### Checklist
@@ -66,10 +93,7 @@ Tampilkan kalender project dan event di halaman Dashboard menggunakan package ta
 - [ ] Tandai tanggal yang memiliki jadwal event project
 - [ ] Tampilkan list event yang terjadi pada tanggal yang diklik"
 
-gh issue create \
-  --title "[DASHBOARD] Implementasi Financial & Project Chart menggunakan fl_chart" \
-  --label "status:backlog,module:dashboard" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[DASHBOARD] Implementasi Financial & Project Chart menggunakan fl_chart" "status:backlog,module:dashboard" "### Deskripsi
 Implementasikan grafik visualisasi data pada dashboard menggunakan fl_chart.
 
 ### Checklist
@@ -77,10 +101,7 @@ Implementasikan grafik visualisasi data pada dashboard menggunakan fl_chart.
 - [ ] Tooltip saat bar chart disentuh
 - [ ] Desain responsif mengikuti lebar layar"
 
-gh issue create \
-  --title "[PROFILE] Halaman Profil & Role-based Sidebar" \
-  --label "status:backlog,module:auth" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[PROFILE] Halaman Profil & Role-based Sidebar" "status:backlog,module:auth" "### Deskripsi
 Halaman profil pengguna dan filter menu sidebar berdasarkan role akun.
 
 ### Checklist
@@ -88,12 +109,7 @@ Halaman profil pengguna dan filter menu sidebar berdasarkan role akun.
 - [ ] Fitur Logout (clear token, reset state, redirect ke /login)
 - [ ] Filter item sidebar AppShell berdasarkan role pengguna"
 
-echo "=== Membuat Issues Modul Projects & Approvals ==="
-
-gh issue create \
-  --title "[PROJECTS] Integrasi API Get All Projects (Replace Mock Data)" \
-  --label "status:ready,module:projects" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[PROJECTS] Integrasi API Get All Projects (Replace Mock Data)" "status:ready,module:projects" "### Deskripsi
 Ganti MockProjectRepository dengan HttpProjectRepository yang memanggil REST API backend.
 
 ### Checklist
@@ -102,10 +118,7 @@ Ganti MockProjectRepository dengan HttpProjectRepository yang memanggil REST API
 - [ ] Implementasi search query ke backend
 - [ ] Tampilkan data asli pada ProjectListPage"
 
-gh issue create \
-  --title "[PROJECTS] Form Tambah & Edit Project" \
-  --label "status:ready,module:projects" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[PROJECTS] Form Tambah & Edit Project" "status:ready,module:projects" "### Deskripsi
 Buat form dialog atau halaman untuk membuat project baru dan mengedit project yang sudah ada.
 
 ### Checklist
@@ -115,10 +128,7 @@ Buat form dialog atau halaman untuk membuat project baru dan mengedit project ya
 - [ ] Request PUT/PATCH edit project ke BE
 - [ ] Integrasi tombol delete project dengan konfirmasi dialog"
 
-gh issue create \
-  --title "[PROJECTS] Halaman Detail Project (/projects/:id)" \
-  --label "status:backlog,module:projects" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[PROJECTS] Halaman Detail Project (/projects/:id)" "status:backlog,module:projects" "### Deskripsi
 Halaman detail project yang menampilkan informasi lengkap dan daftar tim yang bertugas.
 
 ### Checklist
@@ -127,10 +137,7 @@ Halaman detail project yang menampilkan informasi lengkap dan daftar tim yang be
 - [ ] Tampilkan rincian biaya, client, dan status milestone
 - [ ] Tampilkan tim manpower yang di-assign ke project"
 
-gh issue create \
-  --title "[APPROVALS] Halaman List Production Cost Approval" \
-  --label "status:backlog,module:approvals" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[APPROVALS] Halaman List Production Cost Approval" "status:backlog,module:approvals" "### Deskripsi
 Halaman list pengajuan biaya produksi yang memerlukan persetujuan.
 
 ### Checklist
@@ -139,10 +146,7 @@ Halaman list pengajuan biaya produksi yang memerlukan persetujuan.
 - [ ] Badge status approval (Pending, Approved, Rejected)
 - [ ] Filter berdasarkan status pengajuan"
 
-gh issue create \
-  --title "[APPROVALS] Detail Approval & Action Approve/Reject dengan Catatan" \
-  --label "status:backlog,module:approvals" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[APPROVALS] Detail Approval & Action Approve/Reject dengan Catatan" "status:backlog,module:approvals" "### Deskripsi
 Aksi approve atau reject pengajuan biaya produksi.
 
 ### Checklist
@@ -151,10 +155,7 @@ Aksi approve atau reject pengajuan biaya produksi.
 - [ ] Tombol Reject -> buka dialog input alasan penolakan -> memicu API POST /reject
 - [ ] Refresh data otomatis setelah aksi berhasil"
 
-gh issue create \
-  --title "[HISTORY] Halaman History Project dengan Filter Status & Tahun" \
-  --label "status:backlog,module:projects" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[HISTORY] Halaman History Project dengan Filter Status & Tahun" "status:backlog,module:projects" "### Deskripsi
 Halaman arsip project yang telah selesai atau ditutup.
 
 ### Checklist
@@ -162,12 +163,7 @@ Halaman arsip project yang telah selesai atau ditutup.
 - [ ] Filter berdasarkan tahun dan kategori
 - [ ] Ringkasan pencapaian dan total nilai kontrak project selesai"
 
-echo "=== Membuat Issues Modul Manpower, Skills & Clients ==="
-
-gh issue create \
-  --title "[MANPOWER] Halaman List Manpower dengan ResponsiveDataView" \
-  --label "status:ready,module:manpower" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[MANPOWER] Halaman List Manpower dengan ResponsiveDataView" "status:ready,module:manpower" "### Deskripsi
 Tampilkan daftar seluruh manpower/SDM tim menggunakan ResponsiveDataView.
 
 ### Checklist
@@ -175,10 +171,7 @@ Tampilkan daftar seluruh manpower/SDM tim menggunakan ResponsiveDataView.
 - [ ] Tampilan data manpower (nama, role/keahlian, status ketersediaan, kontak)
 - [ ] Search & filter manpower berdasarkan ketersediaan (Available / On Project)"
 
-gh issue create \
-  --title "[MANPOWER] Form Tambah & Edit Data Manpower" \
-  --label "status:ready,module:manpower" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[MANPOWER] Form Tambah & Edit Data Manpower" "status:ready,module:manpower" "### Deskripsi
 Fitur untuk menambahkan manpower baru dan memperbarui data manpower.
 
 ### Checklist
@@ -187,10 +180,7 @@ Fitur untuk menambahkan manpower baru dan memperbarui data manpower.
 - [ ] Integrasi endpoint PUT /manpower/:id
 - [ ] Aksi hapus manpower dengan dialog konfirmasi"
 
-gh issue create \
-  --title "[SKILLS] CRUD Skill Management (/skills)" \
-  --label "status:ready,module:manpower" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[SKILLS] CRUD Skill Management (/skills)" "status:ready,module:manpower" "### Deskripsi
 Manajemen data master keahlian/skill tim.
 
 ### Checklist
@@ -199,10 +189,7 @@ Manajemen data master keahlian/skill tim.
 - [ ] Dialog edit skill & hapus skill
 - [ ] Integrasi API CRUD skills"
 
-gh issue create \
-  --title "[CLIENTS] Halaman Data Client & Form CRUD Client" \
-  --label "status:ready,module:clients" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[CLIENTS] Halaman Data Client & Form CRUD Client" "status:ready,module:clients" "### Deskripsi
 Manajemen data kontak client perorangan atau PIC perusahaan.
 
 ### Checklist
@@ -211,10 +198,7 @@ Manajemen data kontak client perorangan atau PIC perusahaan.
 - [ ] Form tambah & edit client
 - [ ] Hapus data client dengan konfirmasi"
 
-gh issue create \
-  --title "[COMPANIES] Halaman Data Perusahaan & Form CRUD Company" \
-  --label "status:backlog,module:clients" \
-  --body "### Deskripsi
+create_issue_if_not_exists "[COMPANIES] Halaman Data Perusahaan & Form CRUD Company" "status:backlog,module:clients" "### Deskripsi
 Manajemen data perusahaan / instansi rekanan klien.
 
 ### Checklist
@@ -222,4 +206,4 @@ Manajemen data perusahaan / instansi rekanan klien.
 - [ ] Form tambah & edit data perusahaan (nama instansi, alamat, nomor kontak)
 - [ ] Tampilkan daftar project yang terhubung dengan company tersebut"
 
-echo "=== Selesai! Semua Issue Berhasil Disiapkan Tanpa Label Anggota ==="
+echo "=== Selesai! Duplikat Dibersihkan dan Hanya 17 Issue Unik yang Aktif ==="
