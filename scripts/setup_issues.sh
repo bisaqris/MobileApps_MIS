@@ -16,13 +16,17 @@ gh label create "module:approvals" --color "E99695" --description "Modul Approva
 gh label create "module:manpower" --color "BFD4F2" --description "Modul Manpower" --force || true
 gh label create "module:clients" --color "D4C5F9" --description "Modul Clients" --force || true
 
-echo "=== 3. Menutup / Reset Semua Issue Lama ==="
-for num in $(gh issue list --limit 200 --state open --json number --jq '.[].number'); do
-  echo "Membersihkan Issue #$num..."
-  gh issue delete "$num" --yes 2>/dev/null || gh issue close "$num" --reason "not_planned" 2>/dev/null || true
+echo "=== 3. Menutup Seluruh Open Issue yang Lama (Reset Total) ==="
+open_issues=$(gh issue list --limit 200 --state open --json number --jq '.[].number' || echo "")
+
+for num in $open_issues; do
+  if [ -n "$num" ]; then
+    echo "Menutup Issue #$num..."
+    gh issue close "$num" || true
+  fi
 done
 
-echo "=== 4. Membuat 17 Issue Baru yang Bersih ==="
+echo "=== 4. Membuat Tepat 17 Issue Baru yang Bersih ==="
 
 gh issue create \
   --title "[AUTH] Integrasi API Login & Token Storage" \
@@ -223,4 +227,4 @@ Manajemen data perusahaan / instansi rekanan klien.
 - [ ] Form tambah & edit data perusahaan (nama instansi, alamat, nomor kontak)
 - [ ] Tampilkan daftar project yang terhubung dengan company tersebut"
 
-echo "=== Selesai! Seluruh Issue Lama Dibersihkan & Tepat 17 Issue Baru Siap Digunakan ==="
+echo "=== Selesai! Semua Issue Lama Ditutup & Tepat 17 Issue Baru Aktif ==="
