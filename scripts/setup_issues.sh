@@ -223,3 +223,4 @@ Manajemen data perusahaan / instansi rekanan klien.
 - [ ] Tampilkan daftar project yang terhubung dengan company tersebut"
 
 echo "=== Selesai! Semua 17 Issue Berhasil Dibuat ==="
+

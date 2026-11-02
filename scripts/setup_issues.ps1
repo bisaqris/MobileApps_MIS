@@ -43,3 +43,4 @@ gh issue create --title "[CLIENTS] Halaman Data Client & Form CRUD Client" --lab
 gh issue create --title "[COMPANIES] Halaman Data Perusahaan & Form CRUD Company" --label "anggota-3,status:backlog,module:clients" --body "CRUD data instansi/rekanan perusahaan."
 
 Write-Host "=== Selesai! Semua 17 Issue Berhasil Dibuat ===" -ForegroundColor Green
+
