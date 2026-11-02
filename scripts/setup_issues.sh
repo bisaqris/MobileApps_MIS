@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== Memulai Pembuatan Label ==="
+echo "=== Membersihkan Label Anggota (Jika Ada) ==="
+gh label delete "anggota-1" --yes || true
+gh label delete "anggota-2" --yes || true
+gh label delete "anggota-3" --yes || true
 
-# 1. Buat Label Tim & Modul
-gh label create "anggota-1" --color "0E8A16" --description "Tugas Anggota 1: Auth & Dashboard" --force || true
-gh label create "anggota-2" --color "1D76DB" --description "Tugas Anggota 2: Projects & Approvals" --force || true
-gh label create "anggota-3" --color "5319E7" --description "Tugas Anggota 3: Manpower & Clients" --force || true
+echo "=== Memulai Pembuatan Label Modul & Status ==="
 gh label create "status:ready" --color "FBCA04" --description "Siap dikerjakan (Sprint 1)" --force || true
 gh label create "status:backlog" --color "C5DEF5" --description "Backlog (Sprint 2 & 3)" --force || true
 gh label create "module:auth" --color "D93F0B" --description "Modul Autentikasi" --force || true
@@ -16,12 +16,12 @@ gh label create "module:approvals" --color "E99695" --description "Modul Approva
 gh label create "module:manpower" --color "BFD4F2" --description "Modul Manpower" --force || true
 gh label create "module:clients" --color "D4C5F9" --description "Modul Clients" --force || true
 
-echo "=== Label Berhasil Dibuat ==="
-echo "=== Membuat Issues Anggota 1 (Auth, Core & Dashboard) ==="
+echo "=== Label Berhasil Disiapkan ==="
+echo "=== Membuat Issues Modul Auth, Core & Dashboard ==="
 
 gh issue create \
   --title "[AUTH] Integrasi API Login & Token Storage" \
-  --label "anggota-1,status:ready,module:auth" \
+  --label "status:ready,module:auth" \
   --body "### Deskripsi
 Hubungkan halaman login dengan API backend dan simpan JWT token ke local secure storage.
 
@@ -34,7 +34,7 @@ Hubungkan halaman login dengan API backend dan simpan JWT token ke local secure 
 
 gh issue create \
   --title "[CORE] Setup Dio Auth Interceptor & Router Guard" \
-  --label "anggota-1,status:ready,module:auth" \
+  --label "status:ready,module:auth" \
   --body "### Deskripsi
 Konfigurasi Dio Interceptor untuk inject header Authorization dan redirect guard di go_router.
 
@@ -45,7 +45,7 @@ Konfigurasi Dio Interceptor untuk inject header Authorization dan redirect guard
 
 gh issue create \
   --title "[DASHBOARD] Integrasi Widget KPI Cards dengan Real API" \
-  --label "anggota-1,status:backlog,module:dashboard" \
+  --label "status:backlog,module:dashboard" \
   --body "### Deskripsi
 Ganti nilai statis pada card Dashboard dengan response real dari endpoint summary/statistik BE.
 
@@ -57,7 +57,7 @@ Ganti nilai statis pada card Dashboard dengan response real dari endpoint summar
 
 gh issue create \
   --title "[DASHBOARD] Implementasi Project Calendar menggunakan table_calendar" \
-  --label "anggota-1,status:backlog,module:dashboard" \
+  --label "status:backlog,module:dashboard" \
   --body "### Deskripsi
 Tampilkan kalender project dan event di halaman Dashboard menggunakan package table_calendar.
 
@@ -68,7 +68,7 @@ Tampilkan kalender project dan event di halaman Dashboard menggunakan package ta
 
 gh issue create \
   --title "[DASHBOARD] Implementasi Financial & Project Chart menggunakan fl_chart" \
-  --label "anggota-1,status:backlog,module:dashboard" \
+  --label "status:backlog,module:dashboard" \
   --body "### Deskripsi
 Implementasikan grafik visualisasi data pada dashboard menggunakan fl_chart.
 
@@ -79,7 +79,7 @@ Implementasikan grafik visualisasi data pada dashboard menggunakan fl_chart.
 
 gh issue create \
   --title "[PROFILE] Halaman Profil & Role-based Sidebar" \
-  --label "anggota-1,status:backlog,module:auth" \
+  --label "status:backlog,module:auth" \
   --body "### Deskripsi
 Halaman profil pengguna dan filter menu sidebar berdasarkan role akun.
 
@@ -88,11 +88,11 @@ Halaman profil pengguna dan filter menu sidebar berdasarkan role akun.
 - [ ] Fitur Logout (clear token, reset state, redirect ke /login)
 - [ ] Filter item sidebar AppShell berdasarkan role pengguna"
 
-echo "=== Membuat Issues Anggota 2 (Projects & Approvals) ==="
+echo "=== Membuat Issues Modul Projects & Approvals ==="
 
 gh issue create \
   --title "[PROJECTS] Integrasi API Get All Projects (Replace Mock Data)" \
-  --label "anggota-2,status:ready,module:projects" \
+  --label "status:ready,module:projects" \
   --body "### Deskripsi
 Ganti MockProjectRepository dengan HttpProjectRepository yang memanggil REST API backend.
 
@@ -104,7 +104,7 @@ Ganti MockProjectRepository dengan HttpProjectRepository yang memanggil REST API
 
 gh issue create \
   --title "[PROJECTS] Form Tambah & Edit Project" \
-  --label "anggota-2,status:ready,module:projects" \
+  --label "status:ready,module:projects" \
   --body "### Deskripsi
 Buat form dialog atau halaman untuk membuat project baru dan mengedit project yang sudah ada.
 
@@ -117,7 +117,7 @@ Buat form dialog atau halaman untuk membuat project baru dan mengedit project ya
 
 gh issue create \
   --title "[PROJECTS] Halaman Detail Project (/projects/:id)" \
-  --label "anggota-2,status:backlog,module:projects" \
+  --label "status:backlog,module:projects" \
   --body "### Deskripsi
 Halaman detail project yang menampilkan informasi lengkap dan daftar tim yang bertugas.
 
@@ -129,7 +129,7 @@ Halaman detail project yang menampilkan informasi lengkap dan daftar tim yang be
 
 gh issue create \
   --title "[APPROVALS] Halaman List Production Cost Approval" \
-  --label "anggota-2,status:backlog,module:approvals" \
+  --label "status:backlog,module:approvals" \
   --body "### Deskripsi
 Halaman list pengajuan biaya produksi yang memerlukan persetujuan.
 
@@ -141,7 +141,7 @@ Halaman list pengajuan biaya produksi yang memerlukan persetujuan.
 
 gh issue create \
   --title "[APPROVALS] Detail Approval & Action Approve/Reject dengan Catatan" \
-  --label "anggota-2,status:backlog,module:approvals" \
+  --label "status:backlog,module:approvals" \
   --body "### Deskripsi
 Aksi approve atau reject pengajuan biaya produksi.
 
@@ -153,7 +153,7 @@ Aksi approve atau reject pengajuan biaya produksi.
 
 gh issue create \
   --title "[HISTORY] Halaman History Project dengan Filter Status & Tahun" \
-  --label "anggota-2,status:backlog,module:projects" \
+  --label "status:backlog,module:projects" \
   --body "### Deskripsi
 Halaman arsip project yang telah selesai atau ditutup.
 
@@ -162,11 +162,11 @@ Halaman arsip project yang telah selesai atau ditutup.
 - [ ] Filter berdasarkan tahun dan kategori
 - [ ] Ringkasan pencapaian dan total nilai kontrak project selesai"
 
-echo "=== Membuat Issues Anggota 3 (Manpower, Skills & Clients) ==="
+echo "=== Membuat Issues Modul Manpower, Skills & Clients ==="
 
 gh issue create \
   --title "[MANPOWER] Halaman List Manpower dengan ResponsiveDataView" \
-  --label "anggota-3,status:ready,module:manpower" \
+  --label "status:ready,module:manpower" \
   --body "### Deskripsi
 Tampilkan daftar seluruh manpower/SDM tim menggunakan ResponsiveDataView.
 
@@ -177,7 +177,7 @@ Tampilkan daftar seluruh manpower/SDM tim menggunakan ResponsiveDataView.
 
 gh issue create \
   --title "[MANPOWER] Form Tambah & Edit Data Manpower" \
-  --label "anggota-3,status:ready,module:manpower" \
+  --label "status:ready,module:manpower" \
   --body "### Deskripsi
 Fitur untuk menambahkan manpower baru dan memperbarui data manpower.
 
@@ -189,7 +189,7 @@ Fitur untuk menambahkan manpower baru dan memperbarui data manpower.
 
 gh issue create \
   --title "[SKILLS] CRUD Skill Management (/skills)" \
-  --label "anggota-3,status:ready,module:manpower" \
+  --label "status:ready,module:manpower" \
   --body "### Deskripsi
 Manajemen data master keahlian/skill tim.
 
@@ -201,7 +201,7 @@ Manajemen data master keahlian/skill tim.
 
 gh issue create \
   --title "[CLIENTS] Halaman Data Client & Form CRUD Client" \
-  --label "anggota-3,status:ready,module:clients" \
+  --label "status:ready,module:clients" \
   --body "### Deskripsi
 Manajemen data kontak client perorangan atau PIC perusahaan.
 
@@ -213,7 +213,7 @@ Manajemen data kontak client perorangan atau PIC perusahaan.
 
 gh issue create \
   --title "[COMPANIES] Halaman Data Perusahaan & Form CRUD Company" \
-  --label "anggota-3,status:backlog,module:clients" \
+  --label "status:backlog,module:clients" \
   --body "### Deskripsi
 Manajemen data perusahaan / instansi rekanan klien.
 
@@ -222,5 +222,4 @@ Manajemen data perusahaan / instansi rekanan klien.
 - [ ] Form tambah & edit data perusahaan (nama instansi, alamat, nomor kontak)
 - [ ] Tampilkan daftar project yang terhubung dengan company tersebut"
 
-echo "=== Selesai! Semua 17 Issue Berhasil Dibuat ==="
-
+echo "=== Selesai! Semua Issue Berhasil Disiapkan Tanpa Label Anggota ==="
