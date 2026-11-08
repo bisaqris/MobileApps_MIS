@@ -11,7 +11,7 @@ class HttpProjectRepository implements ProjectRepository {
   @override
   Future<List<Project>> fetchProjects({String query = ''}) async {
     try {
-      final response = await dio.get<dynamic>('/api/projects',
+      final response = await dio.get<dynamic>('/projects',
           queryParameters:
               query.trim().isNotEmpty ? {'search': query.trim()} : null);
       final data = response.data;
@@ -31,6 +31,57 @@ class HttpProjectRepository implements ProjectRepository {
           'Gagal mengambil data proyek: ${e.response?.statusMessage ?? e.message}');
     } catch (e) {
       throw Exception('Terjadi kesalahan tidak terduga: $e');
+    }
+  }
+
+  @override
+  Future<void> createProject(Project project) async {
+    try {
+      final model = ProjectModel(
+          id: project.id,
+          name: project.name,
+          category: project.category,
+          clientId: project.clientId,
+          clientName: project.clientName,
+          manager: project.manager,
+          contractValue: project.contractValue,
+          eventDate: project.eventDate,
+          status: project.status);
+      await dio.post('/projects', data: model.toCreateJson());
+    } on DioException catch (e) {
+      throw Exception(
+          'Gagal menambah proyek: ${e.response?.data ?? e.message}');
+    }
+  }
+
+  @override
+  Future<void> updateProject(Project project) async {
+    try {
+      final model = ProjectModel(
+          id: project.id,
+          name: project.name,
+          category: project.category,
+          clientId: project.clientId,
+          clientName: project.clientName,
+          manager: project.manager,
+          contractValue: project.contractValue,
+          eventDate: project.eventDate,
+          status: project.status);
+
+      await dio.patch('/projects/${project.id}', data: model.toUpdateJson());
+    } on DioException catch (e) {
+      throw Exception(
+          'Gagal memperbarui proyek: ${e.response?.data ?? e.message}');
+    }
+  }
+
+  @override
+  Future<void> deleteProject(String id) async {
+    try {
+      await dio.delete('/projects/$id');
+    } on DioException catch (e) {
+      throw Exception(
+          'Gagal menghapus proyek: ${e.response?.data ?? e.message}');
     }
   }
 }
