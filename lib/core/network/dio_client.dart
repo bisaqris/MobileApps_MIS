@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-const _baseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.example.com');
+const _baseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: 'https://functionality-unfortunately-configuring-feeling.trycloudflare.com');
 
 final dioProvider = Provider<Dio>((ref) {
   final dio = Dio(BaseOptions(
