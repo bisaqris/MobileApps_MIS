@@ -24,7 +24,8 @@ class _MenuSection {
 const _sections = <_MenuSection>[
   _MenuSection(null, [
     _MenuItem('Dashboard', Iconsax.home_2, AppRoutes.dashboard),
-    _MenuItem('Production Cost Approval', Iconsax.document_text, AppRoutes.approvals),
+    _MenuItem(
+        'Production Cost Approval', Iconsax.document_text, AppRoutes.approvals),
   ]),
   _MenuSection('SALES', [
     _MenuItem('Project List', Iconsax.document, AppRoutes.projects),
@@ -64,15 +65,21 @@ class AppShell extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Makromedia', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: const Text('Makromedia',
+            style: TextStyle(fontWeight: FontWeight.w600)),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
-            child: CircleAvatar(radius: 16, backgroundColor: AppColors.primary50, child: Text('JD')),
+            child: CircleAvatar(
+                radius: 16,
+                backgroundColor: AppColors.primary50,
+                child: Text('JD')),
           ),
         ],
       ),
-      drawer: Drawer(child: SafeArea(child: _Sidebar(location: location, closeOnTap: true))),
+      drawer: Drawer(
+          child:
+              SafeArea(child: _Sidebar(location: location, closeOnTap: true))),
       body: child,
     );
   }
@@ -95,9 +102,15 @@ class _Sidebar extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(12)),
               alignment: Alignment.center,
-              child: const Text('M', style: TextStyle(color: AppColors.white, fontSize: 24, fontWeight: FontWeight.w700)),
+              child: const Text('M',
+                  style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700)),
             ),
             const SizedBox(width: 12),
             Text('Makromedia', style: Theme.of(context).textTheme.titleLarge),
@@ -107,7 +120,8 @@ class _Sidebar extends StatelessWidget {
             if (s.title != null)
               Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 8),
-                child: Text(s.title!, style: Theme.of(context).textTheme.labelSmall),
+                child: Text(s.title!,
+                    style: Theme.of(context).textTheme.labelSmall),
               ),
             for (final item in s.items)
               _MenuTile(
@@ -115,7 +129,10 @@ class _Sidebar extends StatelessWidget {
                 selected: location.startsWith(item.path),
                 onTap: () {
                   if (closeOnTap) Navigator.of(context).pop();
-                  context.go(item.path);
+
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    context.go(item.path);
+                  });
                 },
               ),
           ],
@@ -126,7 +143,8 @@ class _Sidebar extends StatelessWidget {
 }
 
 class _MenuTile extends StatelessWidget {
-  const _MenuTile({required this.item, required this.selected, required this.onTap});
+  const _MenuTile(
+      {required this.item, required this.selected, required this.onTap});
 
   final _MenuItem item;
   final bool selected;
@@ -151,7 +169,8 @@ class _MenuTile extends StatelessWidget {
               Expanded(
                 child: Text(item.label,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: fg, fontSize: 14, fontWeight: FontWeight.w500)),
+                    style: TextStyle(
+                        color: fg, fontSize: 14, fontWeight: FontWeight.w500)),
               ),
             ]),
           ),
