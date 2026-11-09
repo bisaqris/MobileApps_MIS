@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mis_app/features/approvals/presentation/pages/approval_list_page.dart';
 import 'package:mis_app/features/projects/presentation/pages/project_detail_page.dart';
 
 import '../../core/widgets/app_shell.dart';
@@ -52,9 +53,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                       return ProjectDetailPage(projectId: id);
                     })
               ]),
+          GoRoute(
+              path: AppRoutes.approvals,
+              pageBuilder: (_, __) =>
+                  const NoTransitionPage(child: ApprovalListPage())),
           // Halaman lain: sementara placeholder sampai fitur dibuat.
           for (final p in [
-            AppRoutes.approvals,
             AppRoutes.history,
             AppRoutes.manpower,
             AppRoutes.skills,
