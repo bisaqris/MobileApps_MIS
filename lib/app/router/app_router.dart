@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mis_app/features/projects/presentation/pages/project_detail_page.dart';
 
 import '../../core/widgets/app_shell.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -36,12 +37,21 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: AppRoutes.dashboard,
-            pageBuilder: (_, __) => const NoTransitionPage(child: DashboardPage()),
+            pageBuilder: (_, __) =>
+                const NoTransitionPage(child: DashboardPage()),
           ),
           GoRoute(
-            path: AppRoutes.projects,
-            pageBuilder: (_, __) => const NoTransitionPage(child: ProjectListPage()),
-          ),
+              path: AppRoutes.projects,
+              pageBuilder: (_, __) =>
+                  const NoTransitionPage(child: ProjectListPage()),
+              routes: [
+                GoRoute(
+                    path: ':id',
+                    builder: (context, state) {
+                      final id = state.pathParameters['id'] ?? '';
+                      return ProjectDetailPage(projectId: id);
+                    })
+              ]),
           // Halaman lain: sementara placeholder sampai fitur dibuat.
           for (final p in [
             AppRoutes.approvals,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:mis_app/features/projects/presentation/widget/project_form_sheet.dart';
 
@@ -44,7 +45,9 @@ class ProjectListPage extends ConsumerWidget {
               data: (items) => ResponsiveDataView<Project>(
                 items: items,
                 columns: _buildColumns(context, ref),
-                onRowTap: (p) {/* TODO: context.go('/projects/${p.id}') */},
+                onRowTap: (p) {
+                  context.push('/projects/${p.id}');
+                },
                 footer: Text(
                     'Showing ${items.length} data out of ${items.length}',
                     style: Theme.of(context).textTheme.bodySmall),
