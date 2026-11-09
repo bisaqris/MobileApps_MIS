@@ -28,6 +28,7 @@ abstract final class AppColors {
   static const gray400 = Color(0xFF9CA3AF);
   static const gray500 = Color(0xFF6B7280);
   static const gray600 = Color(0xFF4B5563);
+  static const gray700 = Color(0xFF374151);
 
   // Semantic
   static const success = Color(0xFF12B76A);
