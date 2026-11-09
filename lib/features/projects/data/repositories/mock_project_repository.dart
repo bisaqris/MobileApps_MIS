@@ -59,6 +59,14 @@ class MockProjectRepository implements ProjectRepository {
   ];
 
   @override
+  Future<Project> getProjectById(String id) async {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    final project = _data.firstWhere((p) => p.id == id,
+        orElse: () => throw Exception('Proyek dengan ID $id tidak ditemukan.'));
+    return project;
+  }
+
+  @override
   Future<void> createProject(Project project) async {
     await Future<void>.delayed(const Duration(milliseconds: 300));
     final newProject = Project(
@@ -68,7 +76,8 @@ class MockProjectRepository implements ProjectRepository {
       name: project.name,
       category: project.category,
       clientId: project.clientId.isNotEmpty ? project.clientId : 'cli-mock',
-      clientName: project.clientName.isNotEmpty ? project.clientName : 'Client Mock',
+      clientName:
+          project.clientName.isNotEmpty ? project.clientName : 'Client Mock',
       manager: project.manager,
       contractValue: project.contractValue,
       eventDate: project.eventDate,

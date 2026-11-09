@@ -35,6 +35,22 @@ class HttpProjectRepository implements ProjectRepository {
   }
 
   @override
+  Future<Project> getProjectById(String id) async {
+    try {
+      final response = await dio.get<dynamic>('/projects/$id');
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+        final projectData = data.containsKey('data') ? data['data'] : data;
+        return ProjectModel.fromJson(projectData as Map<String, dynamic>);
+      }
+      throw Exception('Format data proyek tidak valid');
+    } on DioException catch (e) {
+      throw Exception(
+          'Gagal memuat detail proyek: ${e.response?.statusMessage ?? e.message}');
+    }
+  }
+
+  @override
   Future<void> createProject(Project project) async {
     try {
       final model = ProjectModel(
