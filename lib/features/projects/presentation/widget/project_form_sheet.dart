@@ -215,7 +215,7 @@ class _ProjectFormSheetState extends ConsumerState<ProjectFormSheet> {
                   ),
                   title:
                       const Text('Event Date', style: TextStyle(fontSize: 14)),
-                  subtitle: Text(DateFormat('dd MMM yyyy').format(_eventDate),
+                  subtitle: Text(DateFormat('dd MMMM yyyy').format(_eventDate),
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,

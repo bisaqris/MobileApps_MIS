@@ -24,6 +24,11 @@ final projectsProvider = FutureProvider.autoDispose<List<Project>>((ref) {
   return ref.watch(projectRepositoryProvider).fetchProjects(query: query);
 });
 
+final projectDetailProvider =
+    FutureProvider.autoDispose.family<Project, String>((ref, id) {
+  return ref.watch(projectRepositoryProvider).getProjectById(id);
+});
+
 final projectControllerProvider =
     StateNotifierProvider<ProjectController, AsyncValue<void>>((ref) {
   return ProjectController(ref);
