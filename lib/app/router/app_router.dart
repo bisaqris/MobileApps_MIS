@@ -4,10 +4,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/widgets/app_shell.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/providers/auth_notifier.dart';
+import '../../features/auth/presentation/providers/auth_state.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/projects/presentation/pages/project_list_page.dart';
 
-/// Semua path aplikasi di satu tempat (dipakai juga oleh sidebar).
 abstract final class AppRoutes {
   static const login = '/login';
   static const dashboard = '/dashboard';
@@ -22,9 +23,21 @@ abstract final class AppRoutes {
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
-  // TODO: ganti dengan state auth (Riverpod) + redirect guard.
+  final authState = ref.watch(authProvider);
+
   return GoRouter(
     initialLocation: AppRoutes.dashboard,
+    refreshListenable: _AuthRefreshListenable(ref),
+    redirect: (context, state) {
+      final isLoggedIn = authState.status == AuthStatus.authenticated;
+      final isLoggingIn = state.uri.path == AppRoutes.login;
+
+      if (!isLoggedIn && !isLoggingIn) return AppRoutes.login;
+
+      if (isLoggedIn && isLoggingIn) return AppRoutes.dashboard;
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: AppRoutes.login,
@@ -36,13 +49,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: AppRoutes.dashboard,
-            pageBuilder: (_, __) => const NoTransitionPage(child: DashboardPage()),
+            pageBuilder: (_, __) =>
+                const NoTransitionPage(child: DashboardPage()),
           ),
           GoRoute(
             path: AppRoutes.projects,
-            pageBuilder: (_, __) => const NoTransitionPage(child: ProjectListPage()),
+            pageBuilder: (_, __) =>
+                const NoTransitionPage(child: ProjectListPage()),
           ),
-          // Halaman lain: sementara placeholder sampai fitur dibuat.
+
           for (final p in [
             AppRoutes.approvals,
             AppRoutes.history,
@@ -63,3 +78,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+class _AuthRefreshListenable extends ChangeNotifier {
+  _AuthRefreshListenable(this._ref) {
+    _ref.listen<AuthState>(authProvider, (_, __) => notifyListeners());
+  }
+  final Ref _ref;
+}

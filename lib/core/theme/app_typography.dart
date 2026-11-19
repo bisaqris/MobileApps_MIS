@@ -3,10 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 
-/// Skala tipografi dari Figma (Overused Grotesk: xs 12 · sm 14 · base 16 ·
-/// lg 18 · xl 20 · 2xl 24 ...).
 abstract final class AppTypography {
-  /// Set true setelah font "OverusedGrotesk" di-bundle di pubspec.yaml.
   static const useBundledFont = false;
   static const bundledFamily = 'OverusedGrotesk';
 
