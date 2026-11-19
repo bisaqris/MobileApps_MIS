@@ -6,14 +6,12 @@ import '../../../../core/network/dio_client.dart';
 import '../../../../core/storage/secure_storage.dart';
 import '../models/auth_response.dart';
 
-/// Repository yang menangani komunikasi dengan API auth.
 class AuthRepository {
   AuthRepository({required this.dio, required this.storage});
 
   final Dio dio;
   final FlutterSecureStorage storage;
 
-  /// Login via POST /login. Simpan token jika berhasil.
   Future<AuthResponse> login({
     required String email,
     required String password,
@@ -27,7 +25,6 @@ class AuthRepository {
       response.data as Map<String, dynamic>,
     );
 
-    // Persist tokens ke secure storage.
     await Future.wait([
       storage.write(
         key: StorageKeys.accessToken,
@@ -42,15 +39,12 @@ class AuthRepository {
     return authResponse;
   }
 
-  /// Ambil access token yang tersimpan.
   Future<String?> getAccessToken() =>
       storage.read(key: StorageKeys.accessToken);
 
-  /// Ambil refresh token yang tersimpan.
   Future<String?> getRefreshToken() =>
       storage.read(key: StorageKeys.refreshToken);
 
-  /// Hapus semua token (logout).
   Future<void> clearTokens() async {
     await Future.wait([
       storage.delete(key: StorageKeys.accessToken),
