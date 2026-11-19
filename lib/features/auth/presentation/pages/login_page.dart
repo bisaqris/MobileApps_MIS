@@ -40,7 +40,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
-    // Tampilkan error feedback via SnackBar.
     ref.listen<AuthState>(authProvider, (prev, next) {
       if (next.errorMessage != null &&
           next.errorMessage != prev?.errorMessage) {
@@ -70,7 +69,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       backgroundColor: AppColors.primary,
       body: Stack(
         children: [
-          // ---- Decorative blurred circles ----
           _buildGlowCircle(
             top: -60,
             left: -60,
@@ -90,7 +88,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             color: const Color(0xFF3B7DFF).withValues(alpha: 0.3),
           ),
 
-          // ---- Main content ----
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
@@ -129,7 +126,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       );
     }
 
-    // ---- Mobile: stacked ----
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -140,7 +136,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  // ---- Branding column (left side) ----
   Widget _buildBrandingColumn() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,7 +196,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  // ---- Form column (right side) ----
   Widget _buildFormColumn(AuthState authState) {
     return Form(
       key: _formKey,
@@ -209,7 +203,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Email field
+
           const Text(
             'Email',
             style: TextStyle(
@@ -280,23 +274,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
           const SizedBox(height: 8),
 
-          // Forgot password
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                // TODO: navigasi ke halaman forgot password.
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white70,
-                textStyle: const TextStyle(fontSize: 13),
-              ),
-              child: const Text('Forgot Password?'),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
           // Login button
           SizedBox(
             height: 52,
@@ -358,7 +335,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  // ---- Decorative glow circle ----
   Widget _buildGlowCircle({
     double? top,
     double? bottom,
