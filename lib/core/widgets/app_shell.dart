@@ -40,9 +40,6 @@ const _sections = <_MenuSection>[
   ]),
 ];
 
-/// Kerangka halaman:
-///  - Desktop (>=1024): sidebar permanen 305px di kiri.
-///  - Tablet/Mobile   : sidebar menjadi Drawer + AppBar dengan tombol menu.
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.location, required this.child});
 
