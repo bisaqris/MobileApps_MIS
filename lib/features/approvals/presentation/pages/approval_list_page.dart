@@ -9,6 +9,7 @@ import 'package:mis_app/core/widgets/responsive_data_view.dart';
 import 'package:mis_app/core/widgets/status_badge.dart';
 import 'package:mis_app/features/approvals/domain/entities/approval_item.dart';
 import 'package:mis_app/features/approvals/presentation/providers/approval_providers.dart';
+import 'package:mis_app/features/approvals/presentation/widget/approval_detail_sheet.dart';
 
 class ApprovalListPage extends ConsumerWidget {
   const ApprovalListPage({super.key});
@@ -58,10 +59,8 @@ class ApprovalListPage extends ConsumerWidget {
                   data: (items) => ResponsiveDataView<ApprovalItem>(
                         items: items,
                         columns: _buildColumns(context, ref),
-                        onRowTap: (item) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Pengajuan: ${item.description}')));
-                        },
+                        onRowTap: (item) =>
+                            ApprovalDetailSheet.show(context, item: item),
                         footer: Text(
                             'Showing ${items.length} data out of ${items.length}',
                             style: Theme.of(context).textTheme.bodySmall),

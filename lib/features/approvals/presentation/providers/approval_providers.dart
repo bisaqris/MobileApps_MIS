@@ -27,3 +27,40 @@ final approvalsProvider = FutureProvider.autoDispose<List<ApprovalItem>>((ref) {
       .watch(approvalRepositoryProvider)
       .fetchApprovals(query: query, status: status);
 });
+
+final approvalControllerProvider =
+    StateNotifierProvider<ApprovalController, AsyncValue<void>>((ref) {
+  return ApprovalController(ref);
+});
+
+class ApprovalController extends StateNotifier<AsyncValue<void>> {
+  ApprovalController(this._ref) : super(const AsyncValue.data(null));
+
+  final Ref _ref;
+
+  Future<bool> approveCost(String id) async {
+    state = const AsyncValue.loading();
+    try {
+      await _ref.read(approvalRepositoryProvider).approveCost(id);
+      state = const AsyncValue.data(null);
+      _ref.invalidate(approvalsProvider);
+      return true;
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      return false;
+    }
+  }
+
+  Future<bool> rejectCost(String id, String note) async {
+    state = const AsyncValue.loading();
+    try {
+      await _ref.read(approvalRepositoryProvider).rejectCost(id, note);
+      state = const AsyncValue.data(null);
+      _ref.invalidate(approvalsProvider);
+      return true;
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      return false;
+    }
+  }
+}
