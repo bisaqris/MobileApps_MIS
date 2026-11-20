@@ -7,4 +7,6 @@ abstract interface class ApprovalRepository {
   });
 
   Future<ApprovalItem> getApprovalById(String id);
+  Future<void> approveCost(String id);
+  Future<void> rejectCost(String id, String note);
 }
