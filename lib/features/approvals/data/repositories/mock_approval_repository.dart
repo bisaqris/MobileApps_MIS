@@ -89,4 +89,50 @@ class MockApprovalRepository implements ApprovalRepository {
           throw Exception('Pengajuan biaya dengan ID $id tidak ditemukan.'),
     );
   }
+
+    @override
+  Future<void> approveCost(String id) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    final index = _data.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      final old = _data[index];
+      _data[index] = ApprovalItem(
+        id: old.id,
+        projectId: old.projectId,
+        projectName: old.projectName,
+        category: old.category,
+        description: old.description,
+        executorName: old.executorName,
+        unitPrice: old.unitPrice,
+        quantity: old.quantity,
+        amount: old.amount,
+        status: ApprovalStatus.approved,
+        rejectionNote: null,
+        createdAt: old.createdAt,
+      );
+    }
+  }
+
+  @override
+  Future<void> rejectCost(String id, String note) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    final index = _data.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      final old = _data[index];
+      _data[index] = ApprovalItem(
+        id: old.id,
+        projectId: old.projectId,
+        projectName: old.projectName,
+        category: old.category,
+        description: old.description,
+        executorName: old.executorName,
+        unitPrice: old.unitPrice,
+        quantity: old.quantity,
+        amount: old.amount,
+        status: ApprovalStatus.rejected,
+        rejectionNote: note,
+        createdAt: old.createdAt,
+      );
+    }
+  }
 }

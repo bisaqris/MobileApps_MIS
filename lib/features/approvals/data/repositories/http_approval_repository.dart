@@ -55,4 +55,25 @@ class HttpApprovalRepository implements ApprovalRepository {
           'Gagal memuat detail approval: ${e.response?.statusMessage ?? e.message}');
     }
   }
+
+  @override
+  Future<void> approveCost(String id) async {
+    try {
+      await dio.patch('/production-costs/$id/approve');
+    } on DioException catch (e) {
+      throw Exception(
+          'Gagal menyetujui pengajuan: ${e.response?.data ?? e.message}');
+    }
+  }
+
+  @override
+  Future<void> rejectCost(String id, String note) async {
+    try {
+      await dio
+          .patch('/production-costs/$id/reject', data: {'rejectionNote': note});
+    } on DioException catch (e) {
+      throw Exception(
+          'Gagal menolak pengajuan: ${e.response?.data ?? e.message}');
+    }
+  }
 }
