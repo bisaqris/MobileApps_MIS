@@ -89,3 +89,5 @@ Desktop.ini
 
 # Recycle Bin used on Windows I/O
 $RECYCLE.BIN/
+
+.env
