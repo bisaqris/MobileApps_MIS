@@ -7,7 +7,7 @@ import '../../domain/entities/project.dart';
 import '../../domain/repositories/project_repository.dart';
 
 // Set ke 'false' jika URL backend sudah aktif kembali
-const bool _useMockData = true;
+const bool _useMockData = false;
 
 final projectRepositoryProvider = Provider<ProjectRepository>((ref) {
   if (_useMockData) {
@@ -39,28 +39,31 @@ final historyCategoryFilterProvider =
     StateProvider<ProjectCategory?>((ref) => null);
 final historyYearFilterProvider = StateProvider<int?>((ref) => null);
 
+final allHistoryProjectsProvider = FutureProvider<List<Project>>((ref) async {
+  return ref.watch(projectRepositoryProvider).fetchProjects();
+});
+
 final historyProjectsProvider =
-    FutureProvider.autoDispose<List<Project>>((ref) async {
-  final allProjects =
-      await ref.watch(projectRepositoryProvider).fetchProjects();
+    Provider.autoDispose<AsyncValue<List<Project>>>((ref) {
+  final allAsync = ref.watch(allHistoryProjectsProvider);
   final search = ref.watch(historySearchProvider).trim().toLowerCase();
   final category = ref.watch(historyCategoryFilterProvider);
   final year = ref.watch(historyYearFilterProvider);
 
-  return allProjects.where((p) {
-    final isCompleted = p.status == ProjectStatus.completed;
+  return allAsync.whenData((allProjects) {
+    return allProjects.where((p) {
+      final isCompleted = p.status == ProjectStatus.completed;
+      final matchSearch = search.isEmpty ||
+          p.name.toLowerCase().contains(search) ||
+          p.clientName.toLowerCase().contains(search) ||
+          p.manager.toLowerCase().contains(search);
 
-    final matchSearch = search.isEmpty ||
-        p.name.toLowerCase().contains(search) ||
-        p.clientName.toLowerCase().contains(search) ||
-        p.manager.toLowerCase().contains(search);
+      final matchCategory = category == null || p.category == category;
 
-    final matchCategory = category == null || p.category == category;
-
-    final matchYear = year == null || p.eventDate.year == year;
-
-    return isCompleted && matchSearch && matchCategory && matchYear;
-  }).toList();
+      final matchYear = year == null || p.eventDate.year == year;
+      return isCompleted && matchSearch && matchCategory && matchYear;
+    }).toList();
+  });
 });
 
 class ProjectController extends StateNotifier<AsyncValue<void>> {

@@ -12,7 +12,7 @@ class HttpApprovalRepository implements ApprovalRepository {
   Future<List<ApprovalItem>> fetchApprovals(
       {String query = '', ApprovalStatus? status}) async {
     try {
-      final response = await dio.get<dynamic>('/production-costs');
+      final response = await dio.get<dynamic>('/production-costs/applications');
       final data = response.data;
       List<dynamic> list = [];
 
