@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mis_app/features/approvals/presentation/pages/approval_list_page.dart';
 import 'package:mis_app/features/projects/presentation/pages/project_detail_page.dart';
+import 'package:mis_app/features/projects/presentation/pages/project_history_page.dart';
 
 import '../../core/widgets/app_shell.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -57,9 +58,12 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: AppRoutes.approvals,
               pageBuilder: (_, __) =>
                   const NoTransitionPage(child: ApprovalListPage())),
+          GoRoute(
+              path: AppRoutes.history,
+              pageBuilder: (_, __) =>
+                  const NoTransitionPage(child: ProjectHistoryPage())),
           // Halaman lain: sementara placeholder sampai fitur dibuat.
           for (final p in [
-            AppRoutes.history,
             AppRoutes.manpower,
             AppRoutes.skills,
             AppRoutes.clients,
