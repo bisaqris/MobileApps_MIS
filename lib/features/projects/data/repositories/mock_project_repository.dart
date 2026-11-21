@@ -56,6 +56,28 @@ class MockProjectRepository implements ProjectRepository {
       eventDate: DateTime(2026, 7, 10),
       status: ProjectStatus.completed,
     ),
+    Project(
+      id: '5',
+      name: 'Festival Musik Indie Bandung',
+      category: ProjectCategory.event,
+      clientId: 'cli-005',
+      clientName: 'Bandung Creative Hub',
+      manager: 'Anton C.',
+      contractValue: 65000000,
+      eventDate: DateTime(2025, 11, 20),
+      status: ProjectStatus.completed,
+    ),
+    Project(
+      id: '6',
+      name: 'TVC Iklan Produk Minuman',
+      category: ProjectCategory.corporateVideo,
+      clientId: 'cli-006',
+      clientName: 'PT Segar Alami',
+      manager: 'Andi K.',
+      contractValue: 50000000,
+      eventDate: DateTime(2025, 6, 14),
+      status: ProjectStatus.completed,
+    ),
   ];
 
   @override
