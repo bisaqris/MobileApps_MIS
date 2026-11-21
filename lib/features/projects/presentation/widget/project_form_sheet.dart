@@ -207,28 +207,32 @@ class _ProjectFormSheetState extends ConsumerState<ProjectFormSheet> {
                 const SizedBox(
                   height: 16,
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(
-                    Iconsax.calendar_1,
-                    color: AppColors.primary,
+                Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(
+                      Iconsax.calendar_1,
+                      color: AppColors.primary,
+                    ),
+                    title: const Text('Event Date',
+                        style: TextStyle(fontSize: 14)),
+                    subtitle: Text(
+                        DateFormat('dd MMMM yyyy').format(_eventDate),
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                    ),
+                    onTap: () async {
+                      final picked = await showDatePicker(
+                          context: context,
+                          initialDate: _eventDate,
+                          firstDate: DateTime(2020),
+                          lastDate: DateTime(2035));
+                      if (picked != null) setState(() => _eventDate = picked);
+                    },
                   ),
-                  title:
-                      const Text('Event Date', style: TextStyle(fontSize: 14)),
-                  subtitle: Text(DateFormat('dd MMMM yyyy').format(_eventDate),
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 14,
-                  ),
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                        context: context,
-                        initialDate: _eventDate,
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2035));
-                    if (picked != null) setState(() => _eventDate = picked);
-                  },
                 ),
                 const SizedBox(
                   height: 16,
