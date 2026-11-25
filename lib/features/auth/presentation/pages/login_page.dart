@@ -106,7 +106,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final isWide = MediaQuery.sizeOf(context).width >= Breakpoints.tablet;
 
     if (isWide) {
-      // ---- Desktop / Tablet: side-by-side ----
       return Container(
         decoration: BoxDecoration(
           color: AppColors.primary,
@@ -116,10 +115,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Left column: branding
             Expanded(child: _buildBrandingColumn()),
             const SizedBox(width: 48),
-            // Right column: form
             Expanded(child: _buildFormColumn(authState)),
           ],
         ),
@@ -141,7 +138,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Logo
         Row(
           children: [
             Container(
@@ -203,7 +199,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-
           const Text(
             'Email',
             style: TextStyle(
@@ -233,7 +228,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
           const SizedBox(height: 24),
 
-          // Password field
           const Text(
             'Password',
             style: TextStyle(
@@ -274,7 +268,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
           const SizedBox(height: 8),
 
-          // Login button
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {},
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white70,
+                textStyle: const TextStyle(fontSize: 13),
+              ),
+              child: const Text('Forgot Password?'),
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
           SizedBox(
             height: 52,
             child: FilledButton(
@@ -305,7 +312,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  // ---- Shared input decoration for login fields ----
   InputDecoration _loginInputDecoration({
     String? hintText,
     Widget? suffixIcon,

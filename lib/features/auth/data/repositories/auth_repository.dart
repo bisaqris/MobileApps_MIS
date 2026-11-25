@@ -1,61 +1,73 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../../core/network/dio_client.dart';
 import '../../../../core/storage/secure_storage.dart';
-import '../models/auth_response.dart';
+import '../../domain/entities/user.dart';
+import '../datasources/dummy_accounts.dart';
 
 class AuthRepository {
-  AuthRepository({required this.dio, required this.storage});
+  AuthRepository({required this.storage});
 
-  final Dio dio;
   final FlutterSecureStorage storage;
 
-  Future<AuthResponse> login({
+  Future<User> login({
     required String email,
     required String password,
   }) async {
-    final response = await dio.post(
-      '/login',
-      data: {'email': email, 'password': password},
-    );
+    await Future.delayed(const Duration(milliseconds: 800));
 
-    final authResponse = AuthResponse.fromJson(
-      response.data as Map<String, dynamic>,
-    );
+    final user = DummyAccounts.authenticate(email, password);
+    if (user == null) {
+      throw Exception('Email atau password salah.');
+    }
 
     await Future.wait([
       storage.write(
         key: StorageKeys.accessToken,
-        value: authResponse.accessToken,
+        value: 'dummy_token_${user.id}_${DateTime.now().millisecondsSinceEpoch}',
       ),
       storage.write(
         key: StorageKeys.refreshToken,
-        value: authResponse.refreshToken,
+        value: 'dummy_refresh_${user.id}',
+      ),
+      storage.write(
+        key: StorageKeys.userData,
+        value: jsonEncode(user.toJson()),
       ),
     ]);
 
-    return authResponse;
+    return user;
   }
 
+  /// Ambil access token yang tersimpan.
   Future<String?> getAccessToken() =>
       storage.read(key: StorageKeys.accessToken);
 
-  Future<String?> getRefreshToken() =>
-      storage.read(key: StorageKeys.refreshToken);
+  /// Ambil data user yang tersimpan.
+  Future<User?> getStoredUser() async {
+    final data = await storage.read(key: StorageKeys.userData);
+    if (data == null) return null;
+    try {
+      return User.fromJson(jsonDecode(data) as Map<String, dynamic>);
+    } catch (_) {
+      return null;
+    }
+  }
 
+  /// Hapus semua token dan data user (logout).
   Future<void> clearTokens() async {
     await Future.wait([
       storage.delete(key: StorageKeys.accessToken),
       storage.delete(key: StorageKeys.refreshToken),
+      storage.delete(key: StorageKeys.userData),
     ]);
   }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(
-    dio: ref.watch(dioProvider),
     storage: ref.watch(secureStorageProvider),
   );
 });

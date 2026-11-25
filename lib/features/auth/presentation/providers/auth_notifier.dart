@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/repositories/auth_repository.dart';
+import '../../domain/entities/user.dart';
 import 'auth_state.dart';
 
 /// Notifier yang mengelola state autentikasi.
@@ -10,14 +10,25 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   final AuthRepository repository;
 
-  /// Cek apakah user sudah punya token tersimpan.
+  /// Cek apakah user sudah punya token & data tersimpan.
   Future<void> checkAuthStatus() async {
     final token = await repository.getAccessToken();
     if (token != null && token.isNotEmpty) {
-      state = state.copyWith(status: AuthStatus.authenticated, clearError: true);
-    } else {
-      state = state.copyWith(status: AuthStatus.unauthenticated, clearError: true);
+      final user = await repository.getStoredUser();
+      if (user != null) {
+        state = state.copyWith(
+          status: AuthStatus.authenticated,
+          user: user,
+          clearError: true,
+        );
+        return;
+      }
     }
+    state = state.copyWith(
+      status: AuthStatus.unauthenticated,
+      clearError: true,
+      clearUser: true,
+    );
   }
 
   /// Login dengan email dan password.
@@ -28,24 +39,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, clearError: true);
 
     try {
-      await repository.login(email: email, password: password);
+      final user = await repository.login(email: email, password: password);
       state = state.copyWith(
         status: AuthStatus.authenticated,
+        user: user,
         isLoading: false,
         clearError: true,
-      );
-    } on DioException catch (e) {
-      final message = _extractErrorMessage(e);
-      state = state.copyWith(
-        status: AuthStatus.unauthenticated,
-        isLoading: false,
-        errorMessage: message,
       );
     } catch (e) {
       state = state.copyWith(
         status: AuthStatus.unauthenticated,
         isLoading: false,
-        errorMessage: 'Terjadi kesalahan. Silakan coba lagi.',
+        errorMessage: e.toString().replaceFirst('Exception: ', ''),
+        clearUser: true,
       );
     }
   }
@@ -56,6 +62,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(
       status: AuthStatus.unauthenticated,
       clearError: true,
+      clearUser: true,
     );
   }
 
@@ -65,31 +72,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(
       status: AuthStatus.unauthenticated,
       errorMessage: 'Sesi Anda telah berakhir. Silakan login kembali.',
+      clearUser: true,
     );
-  }
-
-  /// Extract pesan error dari DioException.
-  String _extractErrorMessage(DioException e) {
-    if (e.response != null) {
-      final data = e.response!.data;
-      if (data is Map<String, dynamic>) {
-        return data['message'] as String? ?? 'Email atau password salah.';
-      }
-      if (e.response!.statusCode == 401) {
-        return 'Email atau password salah.';
-      }
-      if (e.response!.statusCode == 422) {
-        return 'Data yang dikirim tidak valid.';
-      }
-    }
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.receiveTimeout) {
-      return 'Koneksi timeout. Periksa jaringan Anda.';
-    }
-    if (e.type == DioExceptionType.connectionError) {
-      return 'Tidak dapat terhubung ke server.';
-    }
-    return 'Terjadi kesalahan. Silakan coba lagi.';
   }
 }
 
@@ -99,4 +83,9 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   // Check stored token on startup.
   notifier.checkAuthStatus();
   return notifier;
+});
+
+/// Convenience provider: current logged-in user (nullable).
+final currentUserProvider = Provider<User?>((ref) {
+  return ref.watch(authProvider).user;
 });
