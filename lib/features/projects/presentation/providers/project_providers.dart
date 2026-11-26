@@ -24,6 +24,10 @@ final projectsProvider = FutureProvider.autoDispose<List<Project>>((ref) {
   return ref.watch(projectRepositoryProvider).fetchProjects(query: query);
 });
 
+final allProjectsProvider = FutureProvider.autoDispose<List<Project>>((ref) {
+  return ref.watch(projectRepositoryProvider).fetchProjects();
+});
+
 final projectDetailProvider =
     FutureProvider.autoDispose.family<Project, String>((ref, id) {
   return ref.watch(projectRepositoryProvider).getProjectById(id);
@@ -77,6 +81,7 @@ class ProjectController extends StateNotifier<AsyncValue<void>> {
       await _ref.read(projectRepositoryProvider).createProject(project);
       state = const AsyncValue.data(null);
       _ref.invalidate(projectsProvider); // Refresh otomatis
+      _ref.invalidate(allProjectsProvider);
       return true;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -90,6 +95,7 @@ class ProjectController extends StateNotifier<AsyncValue<void>> {
       await _ref.read(projectRepositoryProvider).updateProject(project);
       state = const AsyncValue.data(null);
       _ref.invalidate(projectsProvider);
+      _ref.invalidate(allProjectsProvider);
       return true;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -103,6 +109,7 @@ class ProjectController extends StateNotifier<AsyncValue<void>> {
       await _ref.read(projectRepositoryProvider).deleteProject(id);
       state = const AsyncValue.data(null);
       _ref.invalidate(projectsProvider);
+      _ref.invalidate(allProjectsProvider);
       return true;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
