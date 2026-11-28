@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mis_app/features/approvals/presentation/pages/approval_list_page.dart';
+import 'package:mis_app/features/companies/presentation/pages/company_list_page.dart';
+import 'package:mis_app/features/manpower/presentation/pages/manpower_list_page.dart';
 import 'package:mis_app/features/projects/presentation/pages/project_detail_page.dart';
 import 'package:mis_app/features/projects/presentation/pages/project_history_page.dart';
 import 'package:mis_app/features/skills/presentation/pages/skill_list_page.dart';
@@ -67,11 +69,17 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: AppRoutes.skills,
               pageBuilder: (_, __) =>
                   const NoTransitionPage(child: SkillListPage())),
+          GoRoute(
+              path: AppRoutes.manpower,
+              pageBuilder: (_, __) =>
+                  const NoTransitionPage(child: ManpowerListPage())),
+          GoRoute(
+              path: AppRoutes.companies,
+              pageBuilder: (_, __) =>
+                  const NoTransitionPage(child: CompanyListPage())),
           // Halaman lain: sementara placeholder sampai fitur dibuat.
           for (final p in [
-            AppRoutes.manpower,
             AppRoutes.clients,
-            AppRoutes.companies,
             AppRoutes.profile,
           ])
             GoRoute(
